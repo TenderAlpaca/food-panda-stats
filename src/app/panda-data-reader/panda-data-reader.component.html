@@ -1,0 +1,16 @@
+<button type="button" mat-raised-button (click)="fileInput.click()">Choose File</button><h1>{{total}} Ft</h1>
+<input hidden (change)="onFileChanged($event)" #fileInput type="file" id="file">
+
+<mat-expansion-panel *ngFor="let restaurant of orderValues()" hideToggle>
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            {{restaurant.name}}
+        </mat-panel-title>
+        <mat-panel-description>
+            {{restaurant.total}} Ft | {{restaurant.orders.length}}db
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+    <p *ngFor="let order of restaurant.orders">
+        {{order.cart.total}}
+    </p>
+</mat-expansion-panel>

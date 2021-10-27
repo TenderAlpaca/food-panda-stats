@@ -25,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/food-panda-stats'),
+      dir: require('path').join(__dirname, './coverage/food-panda-restaurants'),
       subdir: '.',
       reporters: [
         { type: 'html' },
