@@ -4,7 +4,7 @@ import {Order, PandaData, Restaurant} from "../models/panda-data.model";
 @Component({
     selector: 'app-panda-data-reader',
     templateUrl: './panda-data-reader.component.html',
-    styleUrls: ['./panda-data-reader.component.css']
+    styleUrls: ['./panda-data-reader.component.scss']
 })
 export class PandaDataReaderComponent implements OnInit {
     restaurants = new Map<string, Restaurant>();
