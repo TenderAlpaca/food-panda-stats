@@ -7,11 +7,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { PandaDataReaderComponent } from './panda-data-reader/panda-data-reader.component';
 import {MatButtonModule} from "@angular/material/button";
 import {MatExpansionModule} from "@angular/material/expansion";
+import { StatisticsComponent } from './statistics/statistics.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PandaDataReaderComponent
+    PandaDataReaderComponent,
+    StatisticsComponent
   ],
     imports: [
         BrowserModule,

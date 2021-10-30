@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Order, PandaData, Restaurant} from "../models/panda-data.model";
+import {OrderDataExtractorService} from "../services/order-data-extractor.service";
+import {PandaData} from "../models/panda-data.model";
 
 @Component({
     selector: 'app-panda-data-reader',
@@ -7,9 +8,8 @@ import {Order, PandaData, Restaurant} from "../models/panda-data.model";
     styleUrls: ['./panda-data-reader.component.scss']
 })
 export class PandaDataReaderComponent implements OnInit {
-    restaurants = new Map<string, Restaurant>();
-    total = 0;
-    constructor() {
+    fileName: any;
+    constructor(private dataExtractor: OrderDataExtractorService) {
     }
 
     ngOnInit(): void {
@@ -18,41 +18,15 @@ export class PandaDataReaderComponent implements OnInit {
     public onFileChanged(event: any) {
         const fileReader = new FileReader();
         fileReader.readAsText(event.target.files[0], "UTF-8");
-        fileReader.onload = this.logFile.bind(this);
+        this.fileName = event.target.files[0].name;
+        fileReader.onload = (readerEvt) => {
+            const str = readerEvt.target.result as string;
+
+            let json = JSON.parse(str) as PandaData;
+            this.dataExtractor.logFile(json);
+        };
         fileReader.onerror = (error) => {
             console.log(error);
         };
-    }
-
-    private logFile(event: Event): void {
-        const str = (<FileReader>event.target).result as string;
-        let json = JSON.parse(str) as PandaData;
-        json.orders.forEach(order => {
-            this.total += order.cart.total;
-            this.restaurants.has(order.restaurant_name)
-                ? this.addOrderToRestaurant(this.restaurants, order)
-                : this.addNewRestaurant(this.restaurants, order);
-        });
-        console.log(this.restaurants);
-    }
-
-    private addOrderToRestaurant(restaurants: Map<string, Restaurant>, order: Order): void {
-        const restaurant = restaurants.get(order.restaurant_name);
-        restaurant!.orders.push(order);
-        restaurant!.total += order.cart.total;
-    }
-
-    private addNewRestaurant(restaurants: Map<string, Restaurant>, order: Order): void {
-        restaurants.set(order.restaurant_name, {
-            name: order.restaurant_name,
-            orders: [order],
-            total: order.cart.total
-        });
-    }
-
-    orderValues() {
-        return [...this.restaurants.values()]
-            .sort((a, b) => b.orders.length - a.orders.length)
-            .map(restaurant => restaurant);
     }
 }
